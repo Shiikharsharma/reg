@@ -1,49 +1,91 @@
-<Html>  
-<head>   
-<title>  
-Registration Page  
-</title>  
-</head>  
-<body bgcolor="Lightskyblue">  
-<br>  
-<form>  
-  
-<label> Firstname </label>         
-<input type="text" name="firstname" size="15"/> <br><br> 
-<label> Lastname: </label>         
-<input type="text" name="lastname" size="15"/> <br>
-<br>  
+<?php
+include('header.php');
+include('admin/config/db.php');
+extract($_POST);
+if(isset($sub))
+{
 
- 
-Email:  
-<input type="email" id="email" name="email"/> <br> 
+	$temp=$_FILES['ph']['tmp_name'];
+    $fn=$_FILES['ph']['name'];
+$ext=end(Explode('.',$fn));
+$fnn=rand().".jpg";
+if($ext=="jpg"||$ext=="png")
+{
+	if(move_uploaded_file($temp,"images/".$fnn))
+	{
+		
+if(mysqli_query($con,"insert into user(firstname,Lastname,email,Dateofbirth,contact,Designation,Gender,Hobbies) values('$firstname','$lastname','$email','$Dateofbirth','$contact','$Designation','$Gender','$Hobbies',)"))
+{
+header("location:admin/index.php");
+}
+else
+{
+$msg="error in filling form";
+}
+	}
+}
+}
+
+?>
+
+
+
+<html>
+<head>
+	<title>User Panel</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+</head>
+<body>
+	<div class="text-center">
+		<h1>Registration Form</h1>
+	</div>
+
+	
+		<form method="post" enctype="multipart/form-data">
+		
+		<label>First Name:</label>
+		<input type="text" name="firstname" class="form-control">
+
+		<br>
+		
+		<label>last Name:</label>
+		<input type="text" name="lastname" class="form-control">
 <br>
-  Date of Birth : <input type="date"><br><br>
- <label>   
-Phone :  
-</label>
-<input type="text" name="country code"  value="+91" size="2"/>   
-<input type="text" name="phone" size="10"/> <br><br>
-<label> Designation: </label>         
-<input type="text" name="Designation" size="15"/> <br>  
-<br>  
-<label>   
-Gender :  
-</label><br>  
-<input type="radio" name="male"/> Male <br>  
-<input type="radio" name="female"/> Female <br>  
-<input type="radio" name="other"/> Other  
-<br>  
-  
-  
- <label > Hobbies</label><br>    
-<label> <input type="checkbox"> Cricket</label>
-<label> <input type="checkbox"> singing</label>
-<label> <input type="checkbox"> dancing</label>
-<label> <input type="checkbox"> painting</label>
-    
-<br><br>
-<input type="button" value="Submit"/>  
-</form>  
-</body>  
+		<label>Email:</label>
+		<input type="text" name="email" class="form-control">
+<br>
+			<label>Date of Birth</label>
+			<input type="text" name="Dateofbirth " class="form-control">
+<br>
+			<label> Contact:</label>
+			<input type="text" name="contact" class="form-control">
+<br>
+			<label>Designation</label>
+			<input type="text" name="Designation" class="form-control">
+<br>
+			<label>Gender</label>
+			<input type="text" name="Gender" class="form-control">
+<br>
+			<input type="checkbox" id="hobby" name="Hobbies" value="Bike">
+				<label for="hobby1"> Singing</label><br> 
+				<input type="checkbox" id="hobby2" name="hobby2" value="Car">
+				<label for="vehicle2"> I have a car</label><br>
+				<input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+				<label for="vehicle3"> I have a boat</label><br>
+
+			
+			<br>
+			<input type="submit" name="sub" class="btn btn-success" >
+			<input type="reset" name="reset" class="btn btn-warning" >
+
+	
+	</form>
+
+		    	</div>
+<?php include("sidebar.php"); ?>
+		    </div>
+		    <div class="clear"> </div>
+		    </div>
+<?php include("footer.php"); ?>
+	</body>
 </html>
